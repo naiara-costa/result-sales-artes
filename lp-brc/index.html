@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quanto a sua empresa perde com processos manuais? | BRC Serviços de Informática — Canal Senior</title>
+<meta name="description" content="Calculadora do custo da ineficiência e termômetro de prontidão para a reforma tributária. Resultado na tela, sem cadastro.">
+<style>
+:root{
+  /* ====== CORES — trocar pela marca da BRC ====== */
+  --cor-destaque:#427bca;
+  --cor-destaque-escuro:#22546f;
+  --cor-destaque-suave:#e8f1fb;
+  --cor-texto:#22546f;
+  --cor-texto-suave:#5a6575;
+  --cor-fundo:#f6f7f9;
+  --cor-card:#ffffff;
+  --cor-borda:#dde1e8;
+  --cor-ok:#15803d;
+  --cor-atencao:#b45309;
+  --cor-risco:#b91c1c;
+  --raio:14px;
+  --fonte:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--fonte);color:var(--cor-texto);background:var(--cor-fundo);line-height:1.55;font-size:17px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header.topo{background:var(--cor-card);border-bottom:1px solid var(--cor-borda);position:sticky;top:0;z-index:10}
+header.topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
+.logo-img{height:52px;width:auto;display:block}
+.logo{font-weight:700;letter-spacing:.02em;border:2px dashed var(--cor-borda);border-radius:8px;padding:6px 12px;color:var(--cor-texto-suave);font-size:14px;white-space:nowrap}
+.btn{display:inline-block;background:var(--cor-destaque);color:#fff;text-decoration:none;border:0;border-radius:10px;padding:13px 22px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center}
+.btn:hover{background:var(--cor-destaque-escuro)}
+.btn.sec{background:transparent;color:var(--cor-destaque);border:2px solid var(--cor-destaque)}
+.btn.sec:hover{background:var(--cor-destaque-suave)}
+.btn.peq{padding:9px 14px;font-size:14px}
+.hero{padding-top:44px;padding-bottom:28px}
+.selo{display:inline-block;background:var(--cor-destaque-suave);color:var(--cor-destaque-escuro);font-weight:700;font-size:12px;letter-spacing:.08em;padding:6px 12px;border-radius:999px;text-transform:uppercase}
+h1{font-size:clamp(28px,5.4vw,44px);line-height:1.15;margin:16px 0 14px;letter-spacing:-.02em}
+.hero p{color:var(--cor-texto-suave);max-width:700px;margin:0 0 20px}
+h2{font-size:clamp(22px,3.6vw,30px);line-height:1.2;margin:0 0 10px;letter-spacing:-.01em}
+section{padding:28px 0}
+.card{background:var(--cor-card);border:1px solid var(--cor-borda);border-radius:var(--raio);padding:24px}
+.contexto ul{padding-left:20px;margin:10px 0}
+.contexto li{margin:6px 0}
+.fonte{font-size:14px;color:var(--cor-texto-suave)}
+.fonte a{color:var(--cor-destaque-escuro)}
+.passo{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--cor-destaque);text-transform:uppercase}
+fieldset{border:1px solid var(--cor-borda);border-radius:12px;margin:18px 0;padding:6px 18px 18px}
+legend{font-weight:700;padding:0 8px}
+.grade{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+label{display:block;font-weight:600;font-size:15px}
+label small{display:block;font-weight:400;color:var(--cor-texto-suave);font-size:13px;margin-top:2px}
+input,select{width:100%;margin-top:6px;padding:12px;font-size:16px;border:1px solid var(--cor-borda);border-radius:10px;font-family:inherit;background:#fff;color:var(--cor-texto)}
+input:focus,select:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--cor-destaque);outline-offset:2px}
+.perg{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--cor-borda)}
+.perg:first-of-type{border-top:0}
+.perg span{flex:1;font-size:15px}
+.sn{display:flex;gap:6px}
+.sn label{display:inline-flex;align-items:center;gap:6px;font-weight:500;padding:8px 14px;border:1px solid var(--cor-borda);border-radius:999px;cursor:pointer}
+.sn input{width:auto;margin:0}
+.sn label:has(input:checked){background:var(--cor-destaque-suave);border-color:var(--cor-destaque)}
+.erro{color:var(--cor-risco);font-size:14px;min-height:20px;margin:8px 0 0}
+#resultado{display:none;margin-top:24px}
+#resultado.on{display:block}
+.num-grande{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}
+.num{background:var(--cor-fundo);border-radius:12px;padding:16px}
+.num b{display:block;font-size:clamp(22px,4vw,30px);line-height:1.1;color:var(--cor-destaque-escuro)}
+.num span{font-size:14px;color:var(--cor-texto-suave)}
+.faixa{background:var(--cor-destaque-suave);border-radius:12px;padding:16px;margin:14px 0}
+.termo{display:flex;align-items:center;gap:14px;border-radius:12px;padding:16px;margin:14px 0;border:2px solid}
+.termo.ok{border-color:var(--cor-ok)} .termo.atencao{border-color:var(--cor-atencao)} .termo.risco{border-color:var(--cor-risco)}
+.termo .nota{font-size:34px;font-weight:800;line-height:1}
+.termo.ok .nota,.termo.ok h3{color:var(--cor-ok)} .termo.atencao .nota,.termo.atencao h3{color:var(--cor-atencao)} .termo.risco .nota,.termo.risco h3{color:var(--cor-risco)}
+.termo h3{margin:0 0 2px;font-size:19px}
+.premissas{font-size:14px;color:var(--cor-texto-suave);border-top:1px dashed var(--cor-borda);margin-top:16px;padding-top:12px}
+.final{background:var(--cor-texto);color:#fff;border-radius:var(--raio);padding:28px}
+.final p{color:#cfd6e0}
+.final .card{color:var(--cor-texto)}
+.acoes{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+form.lead .grade{margin-bottom:14px}
+footer{padding:32px 0 48px;color:var(--cor-texto-suave);font-size:14px;border-top:1px solid var(--cor-borda);margin-top:24px}
+@media(max-width:640px){
+  body{font-size:16px}
+  .grade{grid-template-columns:1fr}
+  .num-grande{grid-template-columns:1fr}
+  .perg{flex-direction:column;align-items:flex-start}
+  .card{padding:18px}.final{padding:20px}
+  header.topo .btn{padding:9px 12px;font-size:13px}
+  .btn.full{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="wrap">
+    <img class="logo-img" src="data:image/jpeg;base64,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" alt="BRC Serviços de Informática" height="52">
+    <a class="btn peq" href="[LINK AGENDA]" data-agenda>Agendar diagnóstico gratuito</a>
+  </div>
+</header>
+
+<main>
+<div class="wrap hero">
+  <span class="selo">Calculadora do custo da ineficiência</span>
+  <h1>Quanto a sua empresa perde hoje com processos manuais e sistemas que não conversam?</h1>
+  <p>Em poucos minutos você estima as horas e o custo anual do retrabalho (planilhas, digitação, conferência manual) e vê como está a prontidão do seu sistema para a reforma tributária. O resultado aparece na tela, sem cadastro.</p>
+  <a class="btn full" href="#calculadora">Fazer o cálculo agora</a>
+</div>
+
+<div class="wrap">
+<section class="contexto" id="reforma">
+  <div class="card">
+    <h2>Por que isso importa agora: a reforma tributária sobre o consumo</h2>
+    <p>A Lei Complementar 214/2025 regulamenta a reforma tributária do consumo (Emenda Constitucional 132/2023), que cria a CBS (federal) e o IBS (estadual e municipal) em substituição a tributos atuais como PIS, Cofins, ICMS e ISS.</p>
+    <ul>
+      <li>A transição é gradual: há uma fase de testes em 2026, a CBS passa a ser cobrada a partir de 2027 e o novo modelo se completa até 2033.</li>
+      <li>Durante a transição, empresas convivem com regras antigas e novas ao mesmo tempo. Isso exige sistema que emita documentos fiscais e apure tributos de forma integrada e atualizável.</li>
+    </ul>
+    <p class="fonte">Fontes: <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm" target="_blank" rel="noopener">Lei Complementar 214/2025 (Planalto)</a> · <a href="https://www.gov.br/receitafederal/pt-br" target="_blank" rel="noopener">Receita Federal (gov.br)</a>. Datas e alíquotas podem ser alteradas por lei posterior; confirme sempre na fonte oficial e com o seu contador.</p>
+  </div>
+</section>
+
+<section id="calculadora">
+  <div class="passo">Passo 1 — Os números da sua empresa</div>
+  <h2>Preencha com valores aproximados</h2>
+  <p class="fonte">Já deixamos valores de exemplo. Troque pelos da sua empresa; nada é enviado para lugar nenhum.</p>
+
+  <form id="calc" class="card" novalidate>
+    <fieldset>
+      <legend>Equipe e retrabalho</legend>
+      <div class="grade">
+        <label>Pessoas nas áreas administrativa, financeira, fiscal e de RH
+          <input id="func" type="number" min="1" step="1" inputmode="numeric" value="25"></label>
+        <label>Horas por semana, por pessoa, em retrabalho
+          <small>Planilhas, digitação repetida, conferência manual</small>
+          <input id="horas" type="number" min="0" max="40" step="0.5" inputmode="decimal" value="6"></label>
+        <label>Custo médio por hora (R$)
+          <small>Salário + encargos e benefícios, dividido pelas horas trabalhadas</small>
+          <input id="custo" type="number" min="0" step="0.5" inputmode="decimal" value="45"></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Sistemas e fechamentos</legend>
+      <div class="grade">
+        <label>Sistemas que não se integram entre si
+          <input id="sist" type="number" min="0" step="1" inputmode="numeric" value="4"></label>
+        <label>Fechamentos mensais que atrasam
+          <small>Quantos por mês (contábil, folha, financeiro...)</small>
+          <input id="fech" type="number" min="0" step="1" inputmode="numeric" value="2"></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Porte e riscos (opcional)</legend>
+      <div class="grade">
+        <label>Faturamento anual
+          <select id="fat">
+            <option value="">Prefiro não informar</option>
+            <option>Até R$ 10 milhões</option>
+            <option selected>De R$ 10 a R$ 50 milhões</option>
+            <option>De R$ 50 a R$ 200 milhões</option>
+            <option>Acima de R$ 200 milhões</option>
+          </select></label>
+        <label>Multas ou erros fiscais por ano (R$)
+          <small>Se não souber, deixe em branco</small>
+          <input id="multas" type="number" min="0" step="100" inputmode="numeric" placeholder="0"></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Termômetro de prontidão para a reforma tributária</legend>
+      <div id="perguntas"></div>
+    </fieldset>
+    <p class="erro" id="erro" role="alert"></p>
+    <button class="btn full" type="submit">Calcular a minha comparação</button>
+  </form>
+
+  <div id="resultado" class="card" aria-live="polite">
+    <div class="passo">Resultado</div>
+    <h2>O que o retrabalho custa hoje</h2>
+    <div class="num-grande">
+      <div class="num"><b id="r-hmes">—</b><span>horas perdidas por mês</span></div>
+      <div class="num"><b id="r-hano">—</b><span>horas perdidas por ano</span></div>
+      <div class="num"><b id="r-custo">—</b><span>custo anual estimado do retrabalho</span></div>
+    </div>
+    <div class="faixa">
+      <strong>O que um ERP integrado costuma liberar:</strong>
+      <div id="r-faixa"></div>
+    </div>
+    <p id="r-extra"></p>
+    <div id="r-termo"></div>
+    <div class="premissas"><strong>Premissas desta estimativa:</strong>
+      horas por ano = pessoas × horas semanais × 52 semanas; horas por mês = horas por ano ÷ 12; custo = horas por ano × custo por hora. A faixa de 30% a 50% de redução do tempo de retrabalho é uma premissa conservadora de referência, não uma promessa: o resultado real depende do seu processo e de uma análise com especialista. Multas, atrasos de fechamento e sistemas desconectados não entram na conta em reais; aparecem apenas como sinais de atenção.</div>
+  </div>
+</section>
+
+<section id="falar">
+  <div class="final">
+    <h2>Um número na tela não é um plano</h2>
+    <p>Para saber quanto você realmente pode liberar, e o que a sua empresa precisa ajustar até a reforma tributária, o próximo passo é uma conversa com um especialista Senior.</p>
+    <div class="acoes">
+      <a class="btn" id="btn-wpp" href="[WHATSAPP BRC]" target="_blank" rel="noopener">Receber o diagnóstico completo com um especialista Senior</a>
+      <a class="btn sec" href="[LINK AGENDA]" data-agenda style="color:#fff;border-color:#fff">Agendar diagnóstico gratuito</a>
+    </div>
+    <br>
+    <form class="lead card" id="lead" novalidate>
+      <strong>Quer que a gente já leve o seu resultado? (opcional)</strong>
+      <p class="fonte">Ao clicar, abrimos o WhatsApp com uma mensagem pronta contendo o seu resultado. Nada é enviado ou guardado por esta página.</p>
+      <div class="grade">
+        <label>Nome<input id="l-nome" autocomplete="name"></label>
+        <label>Empresa<input id="l-emp" autocomplete="organization"></label>
+        <label>Cargo<input id="l-cargo" autocomplete="organization-title"></label>
+        <label>Seu WhatsApp<input id="l-tel" type="tel" inputmode="tel" autocomplete="tel"></label>
+      </div>
+      <button class="btn full" type="submit">Abrir WhatsApp com a mensagem pronta</button>
+    </form>
+  </div>
+</section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>BRC Serviços de Informática — Canal de Distribuição Senior</strong><br>
+    Rua Caçaquera, 39 · Tatuapé · São Paulo/SP · administrativo@brcserv.com.br · <a href="https://www.brcserv.com.br/">brcserv.com.br</a><br>
+    <span>Esta página não coleta nem armazena dados. · Senior Sistemas é marca de seus respectivos titulares. Estimativas desta página são ilustrativas e não constituem promessa de resultado nem orientação tributária.</span>
+  </div>
+</footer>
+
+<script>
+/* ====== CONFIGURAÇÃO — preencher com dados da BRC ====== */
+var CONFIG = {
+  whatsapp: "",        // só dígitos com DDI, ex.: 5511999999999 (vazio = espaço reservado)
+  linkAgenda: "",      // URL da agenda (vazio = espaço reservado)
+  reducaoMin: 0.30,    // premissa conservadora (validar com a BRC)
+  reducaoMax: 0.50
+};
+
+var PERGUNTAS = [
+  "Seu sistema atual emite documentos fiscais e apura tributos no mesmo ambiente da contabilidade e do financeiro?",
+  "Sua empresa já mapeou quais processos e cadastros (produtos, serviços, clientes) precisam mudar para CBS e IBS?",
+  "Seu fornecedor de sistema já informou como e quando vai atualizar o produto para as regras novas?",
+  "A equipe fiscal/contábil já foi treinada, ou tem plano de treinamento, para as regras da reforma?",
+  "Você consegue gerar, sem planilhas paralelas, o relatório de apuração de tributos do mês?",
+  "Existe um responsável ou grupo na empresa acompanhando a reforma tributária?"
+];
+
+/* === CÁLCULO (função pura, testada em TESTES.md) === */
+function calcular(e){
+  var horasAno = e.func * e.horas * 52;
+  var horasMes = horasAno / 12;
+  var custoAno = horasAno * e.custo;
+  return {
+    horasMes: horasMes,
+    horasAno: horasAno,
+    custoAno: custoAno,
+    horasLivresMin: horasAno * CONFIG.reducaoMin,
+    horasLivresMax: horasAno * CONFIG.reducaoMax,
+    custoLivreMin: custoAno * CONFIG.reducaoMin,
+    custoLivreMax: custoAno * CONFIG.reducaoMax
+  };
+}
+function notaProntidao(sims){
+  if(sims >= 5) return {nivel:"ok", rotulo:"Pronta"};
+  if(sims >= 3) return {nivel:"atencao", rotulo:"Em atenção"};
+  return {nivel:"risco", rotulo:"Em risco"};
+}
+/* === FIM CÁLCULO === */
+
+var $ = function(id){return document.getElementById(id)};
+var nf = new Intl.NumberFormat("pt-BR",{maximumFractionDigits:0});
+var brl = new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+var ultimo = null;
+
+(function montarPerguntas(){
+  var h = "";
+  PERGUNTAS.forEach(function(p,i){
+    h += '<div class="perg"><span>'+(i+1)+'. '+p+'</span><div class="sn">'+
+      '<label><input type="radio" name="q'+i+'" value="1"> Sim</label>'+
+      '<label><input type="radio" name="q'+i+'" value="0"> Não</label></div></div>';
+  });
+  $("perguntas").innerHTML = h;
+})();
+
+function num(id){ var v=$(id).value; return v===""?NaN:Number(v); }
+
+$("calc").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  var e = {func:num("func"), horas:num("horas"), custo:num("custo"),
+           sist:num("sist")||0, fech:num("fech")||0, multas:num("multas")||0};
+  if(!(e.func>=1) || !(e.horas>=0) || !(e.custo>=0)){
+    $("erro").textContent = "Preencha pessoas (mínimo 1), horas por semana e custo por hora com números válidos.";
+    return;
+  }
+  if(e.horas>40){ $("erro").textContent="Horas por semana não pode passar de 40 por pessoa."; return; }
+  var sims = 0, resp = 0;
+  PERGUNTAS.forEach(function(_,i){
+    var r = document.querySelector('input[name="q'+i+'"]:checked');
+    if(r){resp++; sims += Number(r.value);}
+  });
+  if(resp<PERGUNTAS.length){
+    $("erro").textContent = "Responda as 6 perguntas do termômetro (Sim ou Não) para ver a nota de prontidão.";
+    return;
+  }
+  $("erro").textContent = "";
+  var r = calcular(e), n = notaProntidao(sims);
+  $("r-hmes").textContent = nf.format(r.horasMes);
+  $("r-hano").textContent = nf.format(r.horasAno);
+  $("r-custo").textContent = brl.format(r.custoAno);
+  $("r-faixa").innerHTML = "Entre <b>"+Math.round(CONFIG.reducaoMin*100)+"% e "+Math.round(CONFIG.reducaoMax*100)+"%</b> do tempo de retrabalho, ou seja, de <b>"+
+    nf.format(r.horasLivresMin)+" a "+nf.format(r.horasLivresMax)+" horas por ano</b> (cerca de <b>"+
+    brl.format(r.custoLivreMin)+" a "+brl.format(r.custoLivreMax)+"</b> em tempo da equipe que poderia ir para atividades de maior valor). É uma estimativa, não uma promessa.";
+  var sinais = [];
+  if(e.sist>=2) sinais.push(e.sist+" sistemas sem integração costumam gerar digitação duplicada e divergência de dados");
+  if(e.fech>=1) sinais.push(e.fech+" fechamento(s) atrasando por mês pesa(m) na decisão e no cumprimento de prazos");
+  if(e.multas>0) sinais.push("multas/erros fiscais de "+brl.format(e.multas)+" por ano (não somados à conta acima)");
+  $("r-extra").innerHTML = sinais.length ? "<strong>Sinais de atenção:</strong> "+sinais.join("; ")+"." : "";
+  $("r-termo").innerHTML = '<div class="termo '+n.nivel+'"><div class="nota">'+sims+'/6</div><div><h3>Prontidão para a reforma: '+n.rotulo+'</h3>'+
+    '<span>'+(n.nivel==="ok"?"Você marcou \"Sim\" na maioria dos pontos. Vale validar os detalhes com um especialista.":
+              n.nivel==="atencao"?"Há pontos importantes ainda em aberto. Convém planejar as ações antes de 2027.":
+              "Vários pontos ainda não estão encaminhados. Quanto antes mapear, mais tempo para se adaptar.")+'</span></div></div>';
+  ultimo = {e:e, r:r, n:n, sims:sims, fat:$("fat").value};
+  $("resultado").classList.add("on");
+  $("resultado").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+function montarMensagem(dados){
+  var t = "Olá! Fiz a calculadora de custo da ineficiência da BRC e gostaria do diagnóstico completo com um especialista Senior.\n\n";
+  if(dados.nome||dados.emp||dados.cargo){
+    t += "Nome: "+(dados.nome||"-")+"\nEmpresa: "+(dados.emp||"-")+"\nCargo: "+(dados.cargo||"-")+"\n";
+    if(dados.tel) t += "WhatsApp: "+dados.tel+"\n";
+    t += "\n";
+  }
+  if(ultimo){
+    var r = ultimo.r, e = ultimo.e;
+    t += "Resultado:\n- Pessoas: "+e.func+" | "+e.horas+" h/semana de retrabalho | R$ "+e.custo+"/hora\n"+
+      "- Horas perdidas: "+nf.format(r.horasMes)+"/mês e "+nf.format(r.horasAno)+"/ano\n"+
+      "- Custo anual estimado do retrabalho: "+brl.format(r.custoAno)+"\n"+
+      "- Sistemas sem integração: "+e.sist+" | Fechamentos atrasados/mês: "+e.fech+"\n"+
+      (e.multas?"- Multas/erros fiscais por ano: "+brl.format(e.multas)+"\n":"")+
+      (ultimo.fat?"- Faturamento: "+ultimo.fat+"\n":"")+
+      "- Prontidão reforma tributária: "+ultimo.sims+"/6 ("+ultimo.n.rotulo+")\n";
+  } else {
+    t += "(Ainda não preenchi a calculadora.)\n";
+  }
+  return t;
+}
+function urlWpp(texto){
+  var base = CONFIG.whatsapp ? "https://wa.me/"+CONFIG.whatsapp : "https://wa.me/";
+  return base+"?text="+encodeURIComponent(texto);
+}
+$("lead").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  var msg = montarMensagem({nome:$("l-nome").value.trim(), emp:$("l-emp").value.trim(),
+    cargo:$("l-cargo").value.trim(), tel:$("l-tel").value.trim()});
+  if(!CONFIG.whatsapp){
+    alert("[WHATSAPP BRC] ainda não configurado. Mensagem que seria enviada:\n\n"+msg);
+    return;
+  }
+  window.open(urlWpp(msg), "_blank", "noopener");
+});
+$("btn-wpp").addEventListener("click", function(ev){
+  if(!CONFIG.whatsapp){ ev.preventDefault(); alert("[WHATSAPP BRC] ainda não configurado."); return; }
+  ev.preventDefault();
+  window.open(urlWpp(montarMensagem({})), "_blank", "noopener");
+});
+Array.prototype.forEach.call(document.querySelectorAll("[data-agenda]"), function(a){
+  a.addEventListener("click", function(ev){
+    if(!CONFIG.linkAgenda){ ev.preventDefault(); alert("[LINK AGENDA] ainda não configurado."); }
+    else a.href = CONFIG.linkAgenda;
+  });
+});
+</script>
+</body>
+</html>
